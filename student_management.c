@@ -2,24 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void clean_stdin(void)
-{
-    int c;
-    do {
-        c = getchar();
-    } while (c != '\n' && c != EOF);
-}
-
-/*
-	Variables
-filename: students_database.txt
-temporary pointer: db_reader
-struct type: student
-main pointer: student_db
-temp file: temp_db
-temp file pointer: ftemp and temp_fp
-*/
-
 typedef struct student
 {
 	char name[21];
@@ -52,7 +34,7 @@ void edit_db()
 
 	printf("Enter id of the student: ");
 	scanf("%d", &id);
-	clean_stdin();
+	fflush(stdin);
 	while(fread(&db_reader,sizeof(student),1,fp))
 	{
 		if(db_reader.id == id) //if the id is matched, display that part of the db
@@ -90,7 +72,7 @@ void edit_db()
 
 			printf("Select your option: ");
 			scanf("%d", &edit_choice);
-			clean_stdin();
+			fflush(stdin);
 
 			if(edit_choice == 1)
 			{
@@ -102,7 +84,7 @@ void edit_db()
 			{
 				printf("Enter new id: ");
 				scanf("%d", &db_reader.id);
-				clean_stdin();
+				fflush(stdin);
 			}
 			else if(edit_choice == 3)
 			{
@@ -114,7 +96,7 @@ void edit_db()
 			{
 				printf("Enter new semester: ");
 				scanf("%d", &db_reader.semester);
-				clean_stdin();
+				fflush(stdin);
 			}
 			else if(edit_choice == 5)
 			{
@@ -127,13 +109,13 @@ void edit_db()
 					{
 						result_flag = 1;
 
-						clean_stdin();
+						fflush(stdin);
 						printf("Re-enter the course code: ");
 						fgets(db_reader.result[j].cc, 8, stdin);
 
 						printf("Enter the obtained CGPA: ");
 						scanf("%lf", &db_reader.result[j].cgpa);
-						clean_stdin();
+						fflush(stdin);
 
 						for(k=0;k<db_reader.number_of_courses;k++)
 						{
@@ -186,7 +168,7 @@ void delete_student()
 
 	printf("Enter id of the student: ");
 	scanf("%d", &id);
-	clean_stdin();
+	fflush(stdin);
 
 	while(fread(&db_reader,sizeof(student),1,fp))
 	{
@@ -245,7 +227,7 @@ void add_new_students()
 	printf("-------------------------------\n");
 	printf("Number of students to be added: ");
 	scanf("%d", &number_of_students);
-	clean_stdin();
+	fflush(stdin);
 	FILE* fp;
 	student* student_db = (student*) malloc(number_of_students * sizeof(student));
 	fp = fopen("students_database.txt", "a");
@@ -262,7 +244,7 @@ void add_new_students()
 
 		printf("Enter id of the student no.%d: ", i+1);
 		scanf("%d", &student_db[i].id);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("Enter department of student no.%d: ", i+1);
 		fgets(student_db[i].department, 4, stdin);
@@ -270,11 +252,11 @@ void add_new_students()
 
 		printf("Enter semester of student no.%d: ", i+1);
 		scanf("%d", &student_db[i].semester);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("Number of courses taken by student no.%d: ", i+1);
 		scanf("%d", &student_db[i].number_of_courses);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("\nTaking result of student no.%d\n", i+1);
 		for(j=0; j<student_db[i].number_of_courses; j++)
@@ -285,7 +267,7 @@ void add_new_students()
 			printf("Enter obtained CGPA in course #%d: ", j+1);
 			scanf("%lf", &student_db[i].result[j].cgpa);
 			total+=student_db[i].result[j].cgpa;
-			clean_stdin();
+			fflush(stdin);
 		}
 		student_db[i].average_cgpa = total/(double) student_db[i].number_of_courses;
 		fwrite(&student_db[i], sizeof(student), 1, fp);
@@ -302,7 +284,7 @@ void create_student_database()
 	printf("-------------------------------\n");
 	printf("Number of students to be added: ");
 	scanf("%d", &number_of_students);
-	clean_stdin();
+	fflush(stdin);
 	FILE* fp;
 	student* student_db = (student*) malloc(number_of_students * sizeof(student));
 	fp = fopen("students_database.txt", "w");
@@ -319,7 +301,7 @@ void create_student_database()
 
 		printf("Enter id of the student no.%d: ", i+1);
 		scanf("%d", &student_db[i].id);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("Enter department of student no.%d: ", i+1);
 		fgets(student_db[i].department, 4, stdin);
@@ -327,11 +309,11 @@ void create_student_database()
 
 		printf("Enter semester of student no.%d: ", i+1);
 		scanf("%d", &student_db[i].semester);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("Number of courses taken by student no.%d: ", i+1);
 		scanf("%d", &student_db[i].number_of_courses);
-		clean_stdin();
+		fflush(stdin);
 
 		printf("\nTaking result of student no.%d\n", i+1);
 		for(j=0; j<student_db[i].number_of_courses; j++)
@@ -342,7 +324,7 @@ void create_student_database()
 			printf("Enter obtained CGPA in course #%d: ", j+1);
 			scanf("%lf", &student_db[i].result[j].cgpa);
 			total += student_db[i].result[j].cgpa;
-			clean_stdin();
+			fflush(stdin);
 		}
 		student_db[i].average_cgpa = total/(double) student_db[i].number_of_courses;
 		fwrite(&student_db[i], sizeof(student), 1, fp);
@@ -399,7 +381,7 @@ void search()
 
 	printf("Enter id of the student: ");
 	scanf("%d", &id);
-	clean_stdin();
+	fflush(stdin);
 	while(fread(&db_reader,sizeof(student),1,fp))
 	{
 		if(db_reader.id == id) //if the id is matched, display that part of the db
