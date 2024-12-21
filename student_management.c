@@ -23,19 +23,13 @@ temp file pointer: ftemp and temp_fp
 typedef struct student
 {
 	char name[21];
-	int roll;
-	char section[7];
-	char fathers_name[21];
-	char mothers_name[21];
-	char address[51];
+	int id;
 	int semester;
 	char department[4];
-	char mobile[20];
-	char email[51];
 	int number_of_courses;
 	struct result
 	{
-		char cc[7];
+		char cc[8];
 		double cgpa;
 	} result[100];
 	double average_cgpa;
@@ -46,9 +40,9 @@ void edit_db()
 	printf("\n-----------------------------\n");
 	printf("      Editing Database      \n");
 	printf("-----------------------------\n");
-	int flag=0,roll,choice,element_number = 1, i,edit_choice,j,k,result_flag=0;
+	int flag=0,id,choice,element_number = 1, i,edit_choice,j,k,result_flag=0;
 	double total=0;
-	char temp_course[7];
+	char temp_course[8];
 
 	student db_reader;
 	FILE *fp; 
@@ -56,12 +50,12 @@ void edit_db()
 	fp = fopen("students_database.txt","r");
 	temp_fp = fopen("temp_db.txt", "w");
 
-	printf("Enter roll of the student: ");
-	scanf("%d", &roll);
+	printf("Enter id of the student: ");
+	scanf("%d", &id);
 	clean_stdin();
 	while(fread(&db_reader,sizeof(student),1,fp))
 	{
-		if(db_reader.roll == roll) //if the roll is matched, display that part of the db
+		if(db_reader.id == id) //if the id is matched, display that part of the db
 		{
 			flag = 1;
 			printf("\n-------------\n");
@@ -70,39 +64,29 @@ void edit_db()
 
 			printf("\n[%d]\n", element_number);
 			printf("Name: %s\n", db_reader.name);
-			printf("Roll: %d\n", db_reader.roll);
-			printf("Section: %s\n", db_reader.section);
-			printf("Father's Name: %s\n", db_reader.fathers_name);
-			printf("Mother's Name: %s\n", db_reader.mothers_name);
-			printf("Address: %s\n", db_reader.address);
-			printf("Mobile: %s\n", db_reader.mobile);
-			printf("Email: %s\n", db_reader.email);
+			printf("ID: %d\n", db_reader.id);
 			printf("Department: %s\n", db_reader.department);
 			printf("Semester: %d\n", db_reader.semester);
 			printf("Result: \n");
-			printf("------------------------\n");
-			printf("| Course Code |  CGPA  |\n");
-			printf("------------------------\n");
+			printf("-------------------------\n");
+			printf("|  Course Code |  CGPA  |\n");
+			printf("-------------------------\n");
 			for(i=0; i<db_reader.number_of_courses; i++)
 			{
 				printf("|    %s   |  %.2lf  |\n", db_reader.result[i].cc, db_reader.result[i].cgpa);
-				printf("------------------------\n");
+				printf("-------------------------\n");
 			}
-			printf("|   Average   |  %.2lf  |\n",db_reader.average_cgpa);
-			printf("------------------------\n");
+			printf("|    Average   |  %.2lf  |\n",db_reader.average_cgpa);
+			printf("-------------------------\n");
+
 			element_number++;
+
 			printf("\nWhat do you want to edit here?\n");
 			printf("1. Name\n");
-			printf("2. Roll\n");
-			printf("3. Section\n");
-			printf("4. Father's name\n");
-			printf("5. Mother's name\n");
-			printf("6. Address\n");
-			printf("7. Mobile\n");
-			printf("8. Email\n");
-			printf("9. Department\n");
-			printf("10. Semester\n");
-			printf("11. Result\n");
+			printf("2. ID\n");
+			printf("3. Department\n");
+			printf("4. Semester\n");
+			printf("5. Result\n");
 
 			printf("Select your option: ");
 			scanf("%d", &edit_choice);
@@ -116,62 +100,26 @@ void edit_db()
 			}
 			else if(edit_choice == 2)
 			{
-				printf("Enter new roll: ");
-				scanf("%d", &db_reader.roll);
+				printf("Enter new id: ");
+				scanf("%d", &db_reader.id);
 				clean_stdin();
 			}
 			else if(edit_choice == 3)
 			{
-				printf("Enter new section: ");
-				fgets(db_reader.section, 7, stdin);
-				if(db_reader.section[strlen(db_reader.section) - 1] == '\n') db_reader.section[strlen(db_reader.section) - 1] = '\0';
-			}
-			else if(edit_choice == 4)
-			{
-				printf("Enter father's name: ");
-				fgets(db_reader.fathers_name, 21, stdin);
-				if(db_reader.fathers_name[strlen(db_reader.fathers_name) - 1] == '\n') db_reader.fathers_name[strlen(db_reader.fathers_name) - 1] = '\0';
-			}
-			else if(edit_choice == 5)
-			{
-				printf("Enter mother's name: ");
-				fgets(db_reader.mothers_name, 21, stdin);
-				if(db_reader.mothers_name[strlen(db_reader.mothers_name) - 1] == '\n') db_reader.mothers_name[strlen(db_reader.mothers_name) - 1] = '\0';
-			}
-			else if(edit_choice == 6)
-			{
-				printf("Enter new address: ");
-				fgets(db_reader.address, 51, stdin);
-				if(db_reader.address[strlen(db_reader.address) - 1] == '\n') db_reader.address[strlen(db_reader.address) - 1] = '\0';
-			}
-			else if(edit_choice == 7)
-			{
-				printf("Enter new mobile number: ");
-				fgets(db_reader.mobile, 20, stdin);
-				if(db_reader.mobile[strlen(db_reader.mobile) - 1] == '\n') db_reader.mobile[strlen(db_reader.mobile) - 1] = '\0';
-			}
-			else if(edit_choice == 8)
-			{
-				printf("Enter new email: ");
-				fgets(db_reader.email, 51, stdin);
-				if(db_reader.email[strlen(db_reader.email) - 1] == '\n') db_reader.email[strlen(db_reader.email) - 1] = '\0';
-			}
-			else if(edit_choice == 9)
-			{
 				printf("Enter department: ");
 				fgets(db_reader.department, 4, stdin);
-				if(db_reader.email[strlen(db_reader.department) - 1] == '\n') db_reader.department[strlen(db_reader.department) - 1] = '\0';
+				if(db_reader.department[strlen(db_reader.department) - 1] == '\n') db_reader.department[strlen(db_reader.department) - 1] = '\0';
 			}
-			else if(edit_choice == 10)
+			else if(edit_choice == 4)
 			{
 				printf("Enter new semester: ");
 				scanf("%d", &db_reader.semester);
 				clean_stdin();
 			}
-			else if(edit_choice == 11)
+			else if(edit_choice == 5)
 			{
 				printf("Enter the course code of the course you want to edit: ");
-				fgets(temp_course, 7, stdin);
+				fgets(temp_course, 8, stdin);
 				if(temp_course[strlen(temp_course) - 1] == '\n') temp_course[strlen(temp_course) - 1] = '\0';
 				for(j=0; j<db_reader.number_of_courses; j++)
 				{
@@ -181,7 +129,7 @@ void edit_db()
 
 						clean_stdin();
 						printf("Re-enter the course code: ");
-						fgets(db_reader.result[j].cc, 7, stdin);
+						fgets(db_reader.result[j].cc, 8, stdin);
 
 						printf("Enter the obtained CGPA: ");
 						scanf("%lf", &db_reader.result[j].cgpa);
@@ -234,15 +182,15 @@ void delete_student()
 	fp = fopen("students_database.txt", "r");
 	ftemp = fopen("temp_db.txt", "w");
 	student db_reader;
-	int roll,flag;
+	int id,flag;
 
-	printf("Enter roll of the student: ");
-	scanf("%d", &roll);
+	printf("Enter id of the student: ");
+	scanf("%d", &id);
 	clean_stdin();
 
 	while(fread(&db_reader,sizeof(student),1,fp))
 	{
-		if(db_reader.roll == roll) //if the roll is matched, display that part of the db
+		if(db_reader.id == id) //if the id is matched, display that part of the db
 		{
 			flag = 1;
 		}
@@ -312,33 +260,9 @@ void add_new_students()
 		fgets(student_db[i].name, 21, stdin);
 		if(student_db[i].name[strlen(student_db[i].name)-1] == '\n') student_db[i].name[strlen(student_db[i].name)-1] = '\0';
 
-		printf("Enter roll of the student no.%d: ", i+1);
-		scanf("%d", &student_db[i].roll);
+		printf("Enter id of the student no.%d: ", i+1);
+		scanf("%d", &student_db[i].id);
 		clean_stdin();
-
-		printf("Enter the section of student no.%d: ", i+1);
-		fgets(student_db[i].section, 7, stdin);
-		if(student_db[i].section[strlen(student_db[i].section)-1] == '\n') student_db[i].section[strlen(student_db[i].section)-1] = '\0';
-
-		printf("Enter father's name of student no.%d: ", i+1);
-		fgets(student_db[i].fathers_name, 21, stdin);
-		if(student_db[i].fathers_name[strlen(student_db[i].fathers_name)-1] == '\n') student_db[i].fathers_name[strlen(student_db[i].fathers_name)-1] = '\0';
-
-		printf("Enter mother's name of student no.%d: ", i+1);
-		fgets(student_db[i].mothers_name, 21, stdin);
-		if(student_db[i].mothers_name[strlen(student_db[i].mothers_name)-1] == '\n') student_db[i].mothers_name[strlen(student_db[i].mothers_name)-1] = '\0';
-
-		printf("Enter address of student no.%d: ", i+1);
-		fgets(student_db[i].address, 51, stdin);
-		if(student_db[i].address[strlen(student_db[i].address)-1] == '\n') student_db[i].address[strlen(student_db[i].address)-1] = '\0';
-
-		printf("Enter mobile number of student no.%d: ", i+1);
-		fgets(student_db[i].mobile, 20, stdin);
-		if(student_db[i].mobile[strlen(student_db[i].mobile)-1] == '\n') student_db[i].mobile[strlen(student_db[i].mobile)-1] = '\0';
-
-		printf("Enter the email address of student no.%d: ", i+1);
-		fgets(student_db[i].email, 51, stdin);
-		if(student_db[i].email[strlen(student_db[i].email)-1] == '\n') student_db[i].email[strlen(student_db[i].email)-1] = '\0';
 
 		printf("Enter department of student no.%d: ", i+1);
 		fgets(student_db[i].department, 4, stdin);
@@ -356,7 +280,7 @@ void add_new_students()
 		for(j=0; j<student_db[i].number_of_courses; j++)
 		{
 			printf("Enter course code #%d: ", j+1);
-			fgets(student_db[i].result[j].cc, 7, stdin);
+			fgets(student_db[i].result[j].cc, 8, stdin);
 			
 			printf("Enter obtained CGPA in course #%d: ", j+1);
 			scanf("%lf", &student_db[i].result[j].cgpa);
@@ -393,33 +317,9 @@ void create_student_database()
 		fgets(student_db[i].name, 21, stdin);
 		if(student_db[i].name[strlen(student_db[i].name)-1] == '\n') student_db[i].name[strlen(student_db[i].name)-1] = '\0';
 
-		printf("Enter roll of the student no.%d: ", i+1);
-		scanf("%d", &student_db[i].roll);
+		printf("Enter id of the student no.%d: ", i+1);
+		scanf("%d", &student_db[i].id);
 		clean_stdin();
-
-		printf("Enter the section of student no.%d: ", i+1);
-		fgets(student_db[i].section, 7, stdin);
-		if(student_db[i].section[strlen(student_db[i].section)-1] == '\n') student_db[i].section[strlen(student_db[i].section)-1] = '\0';
-
-		printf("Enter father's name of student no.%d: ", i+1);
-		fgets(student_db[i].fathers_name, 21, stdin);
-		if(student_db[i].fathers_name[strlen(student_db[i].fathers_name)-1] == '\n') student_db[i].fathers_name[strlen(student_db[i].fathers_name)-1] = '\0';
-
-		printf("Enter mother's name of student no.%d: ", i+1);
-		fgets(student_db[i].mothers_name, 21, stdin);
-		if(student_db[i].mothers_name[strlen(student_db[i].mothers_name)-1] == '\n') student_db[i].mothers_name[strlen(student_db[i].mothers_name)-1] = '\0';
-
-		printf("Enter address of student no.%d: ", i+1);
-		fgets(student_db[i].address, 51, stdin);
-		if(student_db[i].address[strlen(student_db[i].address)-1] == '\n') student_db[i].address[strlen(student_db[i].address)-1] = '\0';
-
-		printf("Enter mobile number of student no.%d: ", i+1);
-		fgets(student_db[i].mobile, 20, stdin);
-		if(student_db[i].mobile[strlen(student_db[i].mobile)-1] == '\n') student_db[i].mobile[strlen(student_db[i].mobile)-1] = '\0';
-
-		printf("Enter the email address of student no.%d: ", i+1);
-		fgets(student_db[i].email, 51, stdin);
-		if(student_db[i].email[strlen(student_db[i].email)-1] == '\n') student_db[i].email[strlen(student_db[i].email)-1] = '\0';
 
 		printf("Enter department of student no.%d: ", i+1);
 		fgets(student_db[i].department, 4, stdin);
@@ -437,7 +337,7 @@ void create_student_database()
 		for(j=0; j<student_db[i].number_of_courses; j++)
 		{
 			printf("Enter course code #%d: ", j+1);
-			fgets(student_db[i].result[j].cc, 7, stdin);
+			fgets(student_db[i].result[j].cc, 8, stdin);
 			
 			printf("Enter obtained CGPA in course #%d: ", j+1);
 			scanf("%lf", &student_db[i].result[j].cgpa);
@@ -466,26 +366,20 @@ void display()
 	{
 		printf("\n[%d]\n", element_number);
 		printf("Name: %s\n", db_reader.name);
-		printf("Roll: %d\n", db_reader.roll);
-		printf("Section: %s\n", db_reader.section);
-		printf("Father's Name: %s\n", db_reader.fathers_name);
-		printf("Mother's Name: %s\n", db_reader.mothers_name);
-		printf("Address: %s\n", db_reader.address);
-		printf("Mobile: %s\n", db_reader.mobile);
-		printf("Email: %s\n", db_reader.email);
+		printf("ID: %d\n", db_reader.id);
 		printf("Department: %s\n", db_reader.department);
 		printf("Semester: %d\n", db_reader.semester);
 		printf("Result: \n");
-		printf("------------------------\n");
-		printf("| Course Code |  CGPA  |\n");
-		printf("------------------------\n");
+		printf("-------------------------\n");
+		printf("|  Course Code |  CGPA  |\n");
+		printf("-------------------------\n");
 		for(i=0; i<db_reader.number_of_courses; i++)
 		{
 			printf("|    %s   |  %.2lf  |\n", db_reader.result[i].cc, db_reader.result[i].cgpa);
-			printf("------------------------\n");
+			printf("-------------------------\n");
 		}
-		printf("|   Average   |  %.2lf  |\n",db_reader.average_cgpa);
-		printf("------------------------\n");
+		printf("|    Average   |  %.2lf  |\n",db_reader.average_cgpa);
+		printf("-------------------------\n");
 		element_number++;
 	}
 	fclose(fp);
@@ -496,94 +390,42 @@ void search()
 	printf("\n-----------------------------\n");
 	printf("      Searching Student      \n");
 	printf("-----------------------------\n");
-	int flag=0,roll,choice,element_number = 1, i;
+	int flag=0,id,element_number = 1, i;
 	char name[21];
-	printf("\nSearch by:\n1. Roll\n2. Name\n: ");
-	scanf("%d", &choice);
-	clean_stdin();
 
 	student db_reader;
 	FILE *fp;
 	fp = fopen("students_database.txt","r");
 
-	if(choice == 1) //user wants to search by roll
+	printf("Enter id of the student: ");
+	scanf("%d", &id);
+	clean_stdin();
+	while(fread(&db_reader,sizeof(student),1,fp))
 	{
-		printf("Enter roll of the student: ");
-		scanf("%d", &roll);
-		clean_stdin();
-		while(fread(&db_reader,sizeof(student),1,fp))
+		if(db_reader.id == id) //if the id is matched, display that part of the db
 		{
-			if(db_reader.roll == roll) //if the roll is matched, display that part of the db
-			{
-				flag = 1;
-				printf("\n-------------\n");
-				printf("    Found    \n");
-				printf("-------------\n");
+			flag = 1;
+			printf("\n-------------\n");
+			printf("    Found    \n");
+			printf("-------------\n");
 
-				printf("\n[%d]\n", element_number);
-				printf("Name: %s\n", db_reader.name);
-				printf("Roll: %d\n", db_reader.roll);
-				printf("Section: %s\n", db_reader.section);
-				printf("Father's Name: %s\n", db_reader.fathers_name);
-				printf("Mother's Name: %s\n", db_reader.mothers_name);
-				printf("Address: %s\n", db_reader.address);
-				printf("Mobile: %s\n", db_reader.mobile);
-				printf("Email: %s\n", db_reader.email);
-				printf("Department: %s\n", db_reader.department);
-				printf("Semester: %d\n", db_reader.semester);
-				printf("Result: \n");
-				printf("------------------------\n");
-				printf("| Course Code |  CGPA  |\n");
-				printf("------------------------\n");
-				for(i=0; i<db_reader.number_of_courses; i++)
-				{
-					printf("|    %s   |  %.2lf  |\n", db_reader.result[i].cc, db_reader.result[i].cgpa);
-					printf("------------------------\n");
-				}
-				printf("|   Average   |  %.2lf  |\n",db_reader.average_cgpa);
-				printf("------------------------\n");
-				element_number++;
-			}
-		}
-	}
-	else if(choice == 2) //user wants to search by name
-	{
-		printf("Enter name of the student: ");
-		fgets(name, 21, stdin);
-		if(name[strlen(name) - 1] == '\n') name[strlen(name) - 1] = '\0';
-		while(fread(&db_reader,sizeof(student),1,fp))
-		{
-			if(strcmp(db_reader.name, name) == 0) //if string is found, display that part of the db. 
+			printf("\n[%d]\n", element_number);
+			printf("Name: %s\n", db_reader.name);
+			printf("ID: %d\n", db_reader.id);
+			printf("Department: %s\n", db_reader.department);
+			printf("Semester: %d\n", db_reader.semester);
+			printf("Result: \n");
+			printf("-------------------------\n");
+			printf("|  Course Code |  CGPA  |\n");
+			printf("-------------------------\n");
+			for(i=0; i<db_reader.number_of_courses; i++)
 			{
-				flag = 1;
-				printf("\n-------------\n");
-				printf("    Found    \n");
-				printf("-------------\n");
-
-				printf("\n[%d]\n", element_number);
-				printf("Name: %s\n", db_reader.name);
-				printf("Roll: %d\n", db_reader.roll);
-				printf("Section: %s\n", db_reader.section);
-				printf("Father's Name: %s\n", db_reader.fathers_name);
-				printf("Mother's Name: %s\n", db_reader.mothers_name);
-				printf("Address: %s\n", db_reader.address);
-				printf("Mobile: %s\n", db_reader.mobile);
-				printf("Email: %s\n", db_reader.email);
-				printf("Department: %s\n", db_reader.department);
-				printf("Semester: %d\n", db_reader.semester);
-				printf("Result: \n");
-				printf("------------------------\n");
-				printf("| Course Code |  CGPA  |\n");
-				printf("------------------------\n");
-				for(i=0; i<db_reader.number_of_courses; i++)
-				{
-					printf("|    %s   |  %.2lf  |\n", db_reader.result[i].cc, db_reader.result[i].cgpa);
-					printf("------------------------\n");
-				}
-				printf("|   Average   |  %.2lf  |\n",db_reader.average_cgpa);
-				printf("------------------------\n");
-				element_number++;
+				printf("|    %s   |  %.2lf  |\n", db_reader.result[i].cc, db_reader.result[i].cgpa);
+				printf("-------------------------\n");
 			}
+			printf("|    Average   |  %.2lf  |\n",db_reader.average_cgpa);
+			printf("-------------------------\n");
+			element_number++;
 		}
 	}
 	if(flag == 0)
