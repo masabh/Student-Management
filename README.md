@@ -1,9 +1,9 @@
 # Student Management Project
 A CLI app that lets you create student databases and manage them with ease. It was written in C. <br/>
-To store data, file is used. Functions used in this program are compatible with linux as well.
-
+To store data, file is used. 
+----
 ## Features:
-* Create student database.
-* Add new students to the database
+* Add students to the database.
+* Search a student by ID and display his information. 
 * Delete any student from the database.
-* Edit any detail of any student in the database.
+* Edit result of any student. 
